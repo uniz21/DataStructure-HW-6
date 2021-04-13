@@ -7,10 +7,10 @@
  */
 
 
+ /* 필요한 헤더파일 추가 */
 #include<stdio.h>
 #include<stdlib.h>
 
-/* 필요한 헤더파일 추가 */
 
 typedef struct Node {
 	int key;
@@ -343,6 +343,22 @@ int deleteLast(headNode* h) {
  * 리스트의 링크를 역순으로 재 배치
  */
 int invertList(headNode* h) {
+
+	int listIndex = 0;
+	listNode* p;
+	listNode* reverse = NULL;
+	listNode* nextNode;
+
+	p = h->first;
+
+	while (p != NULL)
+	{
+		nextNode = p->link;
+		p->link = reverse;
+		reverse = p;
+		p = nextNode;
+	}
+	h->first = reverse;
 
 	return 0;
 }
