@@ -169,6 +169,12 @@ int insertNode(headNode* h, int key)
 	listNode* p;
 	listNode* newNode = (listNode*)malloc(sizeof(listNode));
 
+	if (h->first == NULL)
+	{
+		insertFirst(h, key);
+		return 0;
+	}
+
 	p = h->first;
 
 	while (p != NULL) {
@@ -199,12 +205,19 @@ int insertLast(headNode* h, int key)
 	listNode* p;
 	listNode* newNode = (listNode*)malloc(sizeof(listNode));
 
+	if (h->first == NULL)
+	{
+		insertFirst(h, key);
+		return 0;
+	}
+
 	p = h->first;
 
 	while (p != NULL) {
 		if (p->link==NULL)
 		{
 			newNode->key = key;
+			newNode->link = NULL;
 			p->link = newNode;
 			break;
 		}
@@ -221,6 +234,11 @@ int insertLast(headNode* h, int key)
 int deleteFirst(headNode* h) {
 
 	if (h == NULL)
+	{
+		printf("Initialize First\n");
+		return 0;
+	}
+	if (h->first == NULL)
 	{
 		printf("There is no Node\n");
 		return 0;
@@ -243,28 +261,39 @@ int deleteNode(headNode* h, int key) {
 
 	if (h == NULL)
 	{
+		printf("Initialize First\n");
+		return 0;
+	}
+	if (h->first == NULL)
+	{
 		printf("There is no Node\n");
 		return 0;
 	}
 
+	int i = 0;
 	listNode* p;
-	listNode* node2del;
+	listNode* prev;
 
 	p = h->first;
 
-	while (p != NULL) {
-		if (key == p->link->key)
+	while (p != NULL) {	
+		if (i == 0 && key == p->key)
 		{
-			node2del = p->link;
-			p->link = node2del->link;
-			free(node2del);
+			deleteFirst(h);
+			return 0;
+		}
+		else if (key == p->key)
+		{
+			prev->link = p->link;
+			free(p);
 			break;
 		}
+		prev = p;
 		p = p->link;
+		i++;
 	}
 
 	return 0;
-
 }
 
 /**
@@ -274,24 +303,36 @@ int deleteLast(headNode* h) {
 
 	if (h == NULL)
 	{
+		printf("Initialize First\n");
+		return 0;
+	}
+	if (h->first == NULL)
+	{
 		printf("There is no Node\n");
 		return 0;
 	}
 
+	int i = 0;
 	listNode* p;
 	listNode* prev;
 
 	p = h->first;
 
 	while (p != NULL) {
-		if (p->link->link == NULL)
+		if (i == 0&& p->link == NULL)
 		{
-			prev = p->link;
-			p->link = NULL;
-			free(prev);
+			deleteFirst(h);
+			return 0;
+		}
+		if (p->link == NULL)
+		{
+			prev->link = NULL;
+			free(p);
 			break;
 		}
+		prev = p;
 		p = p->link;
+		i++;
 	}
 
 	return 0;
